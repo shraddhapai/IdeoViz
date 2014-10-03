@@ -1,0 +1,104 @@
+\documentclass{article}
+\usepackage{anysize}
+\marginsize{0.5in}{0.4in}{0.5in}{0.5in}
+\newcommand{\at}{\makeatletter @\makeatother}
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+%\VignetteIndexEntry{IdeoViz: a package for plotting simple data along ideograms} 
+%\VignetteDepends{Biobase, IRanges, GenomicRanges,rtracklayer,RColorBrewer}
+%\VignetteKeywords{Ideograms, Visualization, Microarray}
+%\VignettePackage{IdeoViz} 
+
+\title{IdeoViz \\ Plot data along chromosome ideograms}
+\author{Shraddha Pai (Shraddha.Pai\at camh.ca), Jingliang Ren}
+\date{XXXXX}
+\maketitle
+Plotting discrete or continuous dataseries in the context of chromosomal location has several useful applications in genomic analysis. Examples of possible metrics include RNA expression levels, densities of epigenetic marks or genomic variation, while applications could range from the analysis of a single variable in a single context, to multiple measurements in several biological contexts (e.g. age/sex/tissue/disease context). Visualization of metrics superimposed on the chromosomal ideogram could provide varied insights into the metric of interest:\\
+\begin{enumerate}
+\item It could identify distinctive spatial distribution that could further hypotheses about the functional role of the metric (e.g. telocentric or pericentromeric enrichment)
+\item It could highlight distribution differences between different groups of samples, suggesting different regulatory mechanisms; in extreme cases, visualization may identify large genomic foci of differences
+\item It could confirm that a quantitative difference measured between groups of interest is consistent throughout the genome (i.e. that there are no foci, and that the change is global).
+\end{enumerate}
+ This package provides a method to plot one or several dataseries against the chromosomal ideogram. It provides some simple options (vertical/horizontal orientation, display in bars or linegraphs). Data are expected to be binned; IdeoViz provides a function for user-specified bin widths. Ideograms for the genome of choice can also be automatically downloaded from UCSC using the getIdeo() function. 
+
+\section{Setup}
+<<setup, eval=T,keep.source=T>>=
+require(IdeoViz)
+require(RColorBrewer) ### nice colours
+data(binned_multiSeries)
+@
+\pagebreak
+\section{Example 1: Plotting several trendlines along one ideogram}
+The ideogram table containing cytogenetic band information is used to render chromosomes. This table corresponds directly to the \emph{cytoBandIdeo} table from the UCSC genome browser. There are two ways to supply an ideogram table to \emph{plotOnIdeo()}:
+\begin{enumerate}
+\item First, it can be automatically downloaded from UCSC for your genome of choice, using the \emph{getIdeo()} function. 
+\item Alternately, a pre-downloaded \emph{cytoBandIdeo} table can be provided to downstream functions such as \emph{plotOnIdeo()}. In this case, the table must be provided as a data.frame object with a header row and the column order matching that of the \emph{cytoBandIdeo()} table at UCSC.
+\end{enumerate}
+<<example1, eval=T, fig=TRUE,height=5,include=T>>=
+ideo <- getIdeo("hg18")
+head(ideo)
+plotOnIdeo(chrom=seqlevels(binned_multiSeries), # which chrom to plot?
+          ideoTable=ideo, # ideogram name
+          values_GR=binned_multiSeries, # data goes here
+          value_cols=colnames(mcols(binned_multiSeries)), # col to plot
+          col=brewer.pal(n=5, 'Spectral'), # colours
+          val_range=c(0,10), # set y-axis range
+          ylab="array intensities",
+          plot_title="Trendline example")  
+@
+\pagebreak
+\section*{Example 2: Plotting a single series in bar format}
+For this example, we specify a local file to obtain the chromosome ideograms, rather than having IdeoViz download it from UCSC.
+<<example2,eval=T, fig=TRUE,height=6,include=T>>=
+data(binned_singleSeries)
+data(hg18_ideo) # cytoBandIdeo table downloaded previously and stored as a data.frame.
+plotOnIdeo(chrom=seqlevels(binned_singleSeries), 
+          ideo=hg18_ideo,
+          values_GR=binned_singleSeries, 
+          value_cols=colnames(mcols(binned_singleSeries)),
+          plotType='rect', # plot as bars
+          col='blue', vertical=T,
+          val_range=c(-1,1), ylab="dummy score",
+          plot_title="Discretized example")
+@
+\pagebreak
+\section*{Example 3: Plotting a single series in bar format along entire genome}
+<<example3,eval=T, fig=TRUE,height=9,include=T>>=
+data(binned_fullGenome)
+plotOnIdeo(chrom=seqlevels(binned_fullGenome), 
+          ideo=ideo, 
+          values_GR=binned_fullGenome, 
+          value_cols=colnames(mcols(binned_fullGenome)),
+          plotType='rect',
+          col='orange', addScale=F, # hide scale to remove visual clutter
+          plot_title="Whole genome view",
+          val_range=c(-1,1),cex.axis=0.5,chromName_cex=0.6)
+@
+\section{Example 4: Binning data using IdeoViz functions}
+In this example, we do everything in IdeoViz: download the ideogram from UCSC, bin the data, and finally, plot along chromosomes.
+For the example, we use histone H3K9me3 peak intensities mapped in the human lymphoblastoid cell line GM12878 (GEO accession GSM733664, only 3 chromosomes shown for simplicity). Here, average peak signal is plotted in 500Kb bins along the chromosome. The ideogram plots show high signal in pericentromeric and telomeric regions, consistent with the association of this histone mark with heterochromatin.\newline
+\textbf{Reference:} ENCODE Project Consortium, Bernstein BE, Birney E, Dunham I, Green ED, Gunter C, Snyder M. An integrated encyclopedia of DNA elements in the human genome. \emph{Nature.}(2012): \textbf{489} (7414):57-74. 
+<<example4, eval=T, fig=TRUE,height=5,include=T>>=
+ideo_hg19 <- getIdeo("hg19")
+chroms <- c("chr1","chr2","chrX")
+data(GSM733664_broadPeaks)
+head(GSM733664_broadPeaks)
+
+chrom_bins <- getBins(chroms, ideo_hg19,stepSize=5*100*1000)
+avg_peak <- avgByBin(data.frame(value=GSM733664_broadPeaks[,7]), 
+  GSM733664_broadPeaks[,1:3], chrom_bins)
+
+plotOnIdeo(chrom=seqlevels(chrom_bins), 
+          ideoTable=ideo_hg19, 
+          values_GR=avg_peak, value_cols='value', 
+          val_range=c(0,50), 
+          plotType='rect', 
+          col='blue', vertical=T
+) 
+
+@
+\section*{Session info}
+<<sessionInfo eval=T, include=T>>=
+sessionInfo()
+@
+\end{document}

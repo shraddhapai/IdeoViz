@@ -1,0 +1,8 @@
+exportPattern("^[[:alpha:]]+")
+import(Biobase)
+import(GenomeInfoDb)
+import(IRanges)
+import(GenomicRanges)
+import(RColorBrewer)
+import(rtracklayer)
+import(graphics)
