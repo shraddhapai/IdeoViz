@@ -10,8 +10,8 @@
 %\VignettePackage{IdeoViz} 
 
 \title{IdeoViz \\ Plot data along chromosome ideograms}
-\author{Shraddha Pai (Shraddha.Pai\at camh.ca), Jingliang Ren}
-\date{5 April, 2016}
+\author{Shraddha Pai (shraddha.pai\at utoronto.ca), Jingliang Ren}
+\date{26 October, 2016}
 \maketitle
 Plotting discrete or continuous dataseries in the context of chromosomal location has several useful applications in genomic analysis. Examples of possible metrics include RNA expression levels, densities of epigenetic marks or genomic variation, while applications could range from the analysis of a single variable in a single context, to multiple measurements in several biological contexts (e.g. age/sex/tissue/disease context). Visualization of metrics superimposed on the chromosomal ideogram could provide varied insights into the metric of interest:\\
 \begin{enumerate}
