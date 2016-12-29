@@ -95,8 +95,26 @@ plotOnIdeo(chrom=seqlevels(chrom_bins),
           plotType='rect', 
           col='blue', vertical=T
 ) 
-
 @
+\section{Example 5: Plotting a set of coordinates as tracks}
+Here we plot multiple GRanges(), each as its own track.
+<<>>=
+ideo_hg19 <- getIdeo("hg19")
+x <- GSM733664_broadPeaks
+gr <- GRanges(x[,1],IRanges(x[,2],x[,3]))
+
+pal <- brewer.pal(n=5,name="Dark2")
+chroms <- c("chr1","chr2","chrX")
+chrom_bins <- getBins(chroms, ideo_hg19,
+					 stepSize=5*100*1000)
+grList <- list(gr,gr,gr,gr,gr)
+plotOnIdeo(chrom=seqlevels(chrom_bins), 
+          ideoTable=ideo_hg19, 
+          values_GR=grList, value_cols="value",  
+          plotType="seg_tracks",
+          col=pal, vertical=F)
+@
+
 \section*{Session info}
 <<sessionInfo eval=T, include=T>>=
 sessionInfo()
