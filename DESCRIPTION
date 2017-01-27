@@ -1,8 +1,8 @@
 Package: IdeoViz
 Type: Package
 Title: Plots data (continuous/discrete) along chromosomal ideogram
-Version: 1.9.1
-Date: 2016-12-08
+Version: 1.9.2
+Date: 2017-01-27
 Author: Shraddha Pai <shraddha.pai@utoronto.ca>, Jingliang Ren
 Maintainer: Shraddha Pai <shraddha.pai@utoronto.ca>
 Depends:
