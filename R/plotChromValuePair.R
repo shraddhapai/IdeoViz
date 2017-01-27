@@ -367,7 +367,7 @@ plotType='rect', col='gray50',val_range=NULL,  value_cols="values",
 	        suppressWarnings(lines(x=rng_start, y=cvalues, 
 								   col=col, ...))
 	    } else if (plotType == "seg_tracks") {
-			cat("horiz:at seg_tracks\n")
+			#cat("horiz:at seg_tracks\n")
 		# plot each track
 			for (k in 1:length(values_GR)) {
 				idx <- k %% length(col)
