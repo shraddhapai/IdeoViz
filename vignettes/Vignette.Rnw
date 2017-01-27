@@ -98,7 +98,7 @@ plotOnIdeo(chrom=seqlevels(chrom_bins),
 @
 \section{Example 5: Plotting a set of coordinates as tracks}
 Here we plot multiple GRanges(), each as its own track.
-<<>>=
+<<example5, eval=T, fig=TRUE,height=5,include=T>>=
 ideo_hg19 <- getIdeo("hg19")
 x <- GSM733664_broadPeaks
 gr <- GRanges(x[,1],IRanges(x[,2],x[,3]))
