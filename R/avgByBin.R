@@ -13,7 +13,7 @@
 #' @usage avgByBin(xpr, featureData, target_GR, justReturnBins = FALSE, 
 #'    getBinCountOnly = FALSE, FUN = mean, doSampleCor = FALSE, 
 #'    verbose = FALSE)
-#' @param xpr(data.frame or matrix) Locus-wise values. Rows correspond to genomic intervals (probes, genes, etc.,) while columns correspond to individual samples
+#' @param xpr (data.frame or matrix) Locus-wise values. Rows correspond to genomic intervals (probes, genes, etc.,) while columns correspond to individual samples
 #' @param featureData (data.frame or GRanges) Locus coordinates. Row order must match \code{xpr}. Column order should be: 1. chrom, 2. locus start, 3. locus end. All elements are assumed to be of identical width. Coordinates must be zero-based or one-based, but not half-open. Coordinate system must match that of \code{target_GR}.
 #' @param target_GR (GRanges) Target intervals, with coordinate system matching that of featureData.
 #' @param justReturnBins (logical) when TRUE, returns the coordinates of the bin to which each row belongs. Does not aggregate data in any way. This output can be used as input for more complex functions with data from each bin.

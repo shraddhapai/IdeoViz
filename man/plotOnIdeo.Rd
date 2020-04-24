@@ -86,4 +86,3 @@ ideoTable=hg18_ideo, values_GR=binned_multiSeries,
 value_cols=colnames(mcols(binned_multiSeries)), col=1:5)
 
 }
-

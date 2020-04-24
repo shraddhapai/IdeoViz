@@ -15,4 +15,4 @@ biocViews: Visualization,Microarray
 Description: Plots data associated with arbitrary genomic intervals
     along chromosomal ideogram.
 License: GPL-2
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

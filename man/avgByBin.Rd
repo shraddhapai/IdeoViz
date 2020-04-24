@@ -9,6 +9,8 @@ avgByBin(xpr, featureData, target_GR, justReturnBins = FALSE,
    verbose = FALSE)
 }
 \arguments{
+\item{xpr}{(data.frame or matrix) Locus-wise values. Rows correspond to genomic intervals (probes, genes, etc.,) while columns correspond to individual samples}
+
 \item{featureData}{(data.frame or GRanges) Locus coordinates. Row order must match \code{xpr}. Column order should be: 1. chrom, 2. locus start, 3. locus end. All elements are assumed to be of identical width. Coordinates must be zero-based or one-based, but not half-open. Coordinate system must match that of \code{target_GR}.}
 
 \item{target_GR}{(GRanges) Target intervals, with coordinate system matching that of featureData.}
@@ -24,8 +26,6 @@ sample correlation (Pearson correlation) for each bin; when TRUE,
 this function overrides \code{FUN}.}
 
 \item{verbose}{(logical) print status messages}
-
-\item{xpr(data.frame}{or matrix) Locus-wise values. Rows correspond to genomic intervals (probes, genes, etc.,) while columns correspond to individual samples}
 }
 \value{
 (GRanges) Binned data or binning statistics; information 
